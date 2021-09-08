@@ -1,0 +1,17 @@
+<li class="media">
+    <a href="{% url 'user' comment.author.username %}" class="pull-left">
+        <img src="{{comment.author.image.url}}" alt="" class="img-circle">
+    </a>
+    <div class="media-body">
+        <span class="text-muted pull-right">
+            <small class="text-muted">{{comment.date_published}}</small>
+        </span>
+        <strong class="">
+            <a href="{% url 'user' comment.author.username %}">
+                {{comment.author.username}}</strong>
+            </a>
+        <p>
+            {{comment.comment}}
+        </p>
+    </div>
+</li>

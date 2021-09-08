@@ -1,0 +1,90 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block content %}
+<style type="text/css">
+	@media (max-width: 768px) {
+		.right-column{
+			margin-left: 0px;
+		}
+	}
+	@media (min-width: 768px) {
+		.right-column{
+			margin-left: 20px;
+		}
+	}
+	.blog-post-container{
+		background-color: #fff;
+		margin-bottom: 20px;
+		width: 100%;
+	}
+	.create-post-bar{
+		background-color: #fff;
+		margin-bottom:20px;
+	}
+	.left-column{
+		padding:0px;
+	}
+	.right-column{
+		padding:0px;
+	}
+
+	.lead{
+		font-size: 17px;
+		text-align: center;
+	}
+
+</style>
+<div class="container">
+	<div class="row">
+
+		<!-- blog feed -->
+		<div class="left-column col-lg-7 offset-lg-1">
+
+			<!-- Top 'create post' bar -->
+			<div class="d-lg-none mb-3">
+				<div class="card m-auto d-flex flex-column p-3">
+					<img class="img-fluid d-block m-auto pb-2" src="{% static 'icon.png' %}" width="72" height="72">
+					<p class="lead">Harmony <br> A Place to post your Stories</p>
+					<p class="m-auto"><a class="btn btn-primary" href="{% url 'story:create' %}">Create Story</a></p>
+				</div>
+			</div>
+			<!-- end Top 'create post' bar -->
+
+			<!-- Blog posts-->
+			{% if story_posts %}
+				{% for post in story_posts %}
+					<div class="blog-post-container">
+						{% include 'story/snippets/story_post_snippet.html' with story_post=post %}
+					</div>
+				{% endfor %}
+			{% else %}
+				<div class="blog-post-container">
+					{% include 'story/snippets/story_post_snippet.html' with query=query %}
+				</div>
+			{% endif %}
+			<!-- End Blog posts-->
+
+			<!-- Pagination -->
+			{% include 'story/snippets/story_post_pagination.html' with story_posts=story_posts %}
+		</div>
+		<!-- end blog feed -->
+
+		<!-- Right 'create post' column  -->
+		<div class="right-column col-lg-3 d-lg-flex d-none flex-column">
+
+			<div class="card create-post-bar d-flex flex-column p-3">
+					<img class="img-fluid d-block m-auto pb-2" src="{% static 'icon.png' %}" width="72" height="72">
+					<p class="lead">Harmony <br> A Place to post your Stories</p>
+					<p class="m-auto"><a class="btn btn-primary" href="{% url 'story:create' %}">Create Story</a></p>
+			</div>
+
+		</div>
+		<!-- end Right 'create post' column  -->
+
+	</div>
+</div>
+
+{% endblock content %}
+

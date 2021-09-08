@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+
+<style type="text/css">
+  .create-form {
+	    width: 100%;
+	    max-width: 100%;
+	    padding: 15px;
+	    margin: auto;
+  	}
+  	.submit-button{
+  		max-width: 200px;
+  	}
+</style>
+
+<div class="container">
+	<div class="row">
+		<div class="col-lg-7 offset-lg-1">
+			<form class="create-form" method="post" enctype="multipart/form-data">{% csrf_token %}
+
+				<div class="form-group image-group" id="id_image_group">
+					<img class="img-fluid image" id="id_image_display">
+				</div>
+				<input type="file" name="image" id="id_image_file" accept="image/*" onchange="readURL(this)">
+
+				<!-- Body -->
+				<div class="form-group" style="margin-top: 20px">
+					<label for="id_body">Content</label>
+					<textarea class="form-control" rows="3" type="text" name="caption" id="id_body" placeholder="Caption..." required></textarea>
+				</div>
+
+				<!-- Submit btn -->
+				<button class="submit-button btn btn-lg btn-primary btn-block" type="submit">POST</button>
+			</form>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+	document.getElementById('id_image_group').onclick = function(event) {
+    	document.getElementById('id_image_file').click();
+    };
+	function readURL(input){
+		var reader = new FileReader();
+		reader.onload = function (e) {
+            $('#id_image_display')
+                .attr('src', e.target.result)
+        };
+		reader.readAsDataURL(input.files[0]);
+	}
+</script>
+
+{% endblock content %} 

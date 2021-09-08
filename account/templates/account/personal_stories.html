@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+
+<style type="text/css">
+
+  .blog-posts {
+    max-width: 500px;
+    width: 100%;
+    margin: auto;
+  }
+</style>
+
+<div class="container mt-4 p-4">
+  <div class="row">
+    <div class="blog-posts">
+      <h3 class="mb-3 font-weight-normal">Stories:</h3>
+      {% if story_posts %}
+        <ul class="list-group">
+        {% for post in story_posts %}
+          <a href="{% url 'story:detail' post.slug %}" style="text-decoration: none;"><li class="list-group-item">{{post.caption}}</li></a>
+        {% endfor %}
+        </ul>
+      {% else %}
+        <p>You have no stories. Create one <a href="{% url 'story:create' %}">here</a>.</p>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+{% endblock content %}

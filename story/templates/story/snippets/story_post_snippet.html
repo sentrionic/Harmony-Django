@@ -1,0 +1,102 @@
+<style type="text/css">
+	.card {
+		max-width: 700px;
+        width: 100%;
+	}
+	.card-body{
+		padding: 20px;
+		border: 0;
+		border-top: 1px solid #ccc;
+	}
+
+    .box {
+       display: flex;
+       align-items:center;
+		vertical-align: middle;
+		padding-left: 10px;
+    }
+
+	a:hover {
+  		text-decoration: none;
+	}
+
+	.dropdown-item:hover {
+ 		background-color: #f2f2f2;
+	}
+
+
+</style>
+
+{% if story_post %}
+<div class="container">
+	<div class="row">
+		<!-- Blog Post -->
+		<div class="card m-auto">
+            <div class="card-footer box">
+				<img class="img-fluid d-block" style="border-radius: 50px; margin-right: 15px" src="{{story_post.author.image.url}}" width="40" height="40">
+                <h4 class="card-title">
+					<a class="text-dark" style="cursor: pointer" href="{% url 'user' story_post.author.username %}">{{story_post.author.username}}</a>
+				</h4>
+
+				{% if story_post.author == request.user %}
+					<div class="navbar-nav dropdown d-xl-flex d-lg-flex d-md-flex d-sm-none d-none" style="margin-left: auto">
+						<a class="nav-link text-dark" style="cursor: pointer;" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true"
+						aria-expanded="false">
+							<i class="fa fa-ellipsis-v" style="margin-left: auto"></i>
+						</a>
+						<div class="dropdown-menu dropdown-primary mr-lg-5 mr-md-5" aria-labelledby="navbarDropdownMenuLink">
+							<a class="dropdown-item" href="{% url 'story:edit' story_post.slug %}">Update</a>
+							<a class="dropdown-item" href="{% url 'story:delete' story_post.slug %}">Delete</a>
+						</div>
+					</div>
+			  	{% endif %}
+
+            </div>
+			<a href="{% url 'story:detail' post.slug %}">
+				<img class="card-img-top" src="{{story_post.image.url}}">
+			</a>
+			<form method="post">{% csrf_token %}
+			<div class="text-muted" style="margin-left: 5px;">
+				<input type="hidden" name="story" value="{{ story_post }}">
+				<button type="submit" class="btn btn-default" name="heart_button" style="outline: none; box-shadow: none">
+				{% if story_post.liked %}
+					<span class="fas fa-heart" style="color: red"></span>
+				{% else %}
+				  	<span class="far fa-heart"></span>
+				{% endif %}
+				</button>
+			</div>
+			</form>
+			<div class="card-body">
+				{% if story_post.likes == 1 %}
+					<p class="card-text">{{story_post.likes}} like</p>
+				{% else %}
+                	<p class="card-text">{{story_post.likes}} likes</p>
+				{% endif %}
+                <p class="card-text"><b>{{story_post.author.username}}</b> {{story_post.caption}}</p>
+			</div>
+			<div class="card-footer text-muted">
+				{% if .story_postdate == story_post.date_published %}
+					Posted on {{story_post.date_published}}
+				{% else %}
+                	Posted {{story_post.date}}
+				{% endif %}
+			</div>
+		</div>
+
+	</div>
+</div>
+
+{% else %}
+
+<div class="container">
+	<div class="row">
+		<div class="card m-auto">
+			<div class="card-body mt-2 mb-2">
+				<h2 class="card-title">No results</h2>
+				<p class="card-text">There were no results matching the search: "{{query}}"</p>
+			</div>
+		</div>
+	</div>
+</div>
+{% endif %}

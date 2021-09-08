@@ -1,0 +1,639 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<style type="text/css">
+	.card{
+		background-color: #fff;
+		padding:20px;
+	}
+</style>
+
+<div class="container">
+
+<div class="row">
+	<div class="col-lg-9 offset-lg-1">
+		<div class="card">
+			<!-- Documentation -->
+			<h3>Documentation</h3>
+			<hr>
+			<br>
+
+			<h4>Story API</h4>
+			<hr>
+			<br>
+
+			<!-- Creating a blog post -->
+			<h6 id="creating-a-blog-post">Posting a Story</h6>
+			<div class="p-4">
+				<p>Request: POST</p>
+				<p>Headers:</p>
+				<div class="code-card">
+					<code>
+						Authorization: Token &lt;token&gt;
+					</code>
+				</div>
+				<br>
+				<p>Url:</p>
+				<div class="code-card">
+					<code>
+						website/api/story/create
+					</code>
+				</div>
+				<br>
+				<p>Params:</p>
+				<div class="code-card">
+					<p>caption (text)</p>
+					<p>tags (text)</p>
+					<p>image (file)</p>
+				</div>
+				<br>
+				<p>Success Response:</p>
+				<div class="code-card">
+					<code>
+						{<br>
+						&nbsp;&nbsp;&nbsp;&nbsp;"caption": "this is  new body \ncool.\nstuff. #wow",<br>
+						&nbsp;&nbsp;&nbsp;&nbsp;"tags": "#wow",<br>
+						&nbsp;&nbsp;&nbsp;&nbsp;"image": "/media/story/1/story_image.png",<br>
+						&nbsp;&nbsp;&nbsp;&nbsp;"date_published": "2019-07-09T15:19:33.095626Z",<br>
+						&nbsp;&nbsp;&nbsp;&nbsp;"username": "username"<br>
+						}
+					</code>
+				</div>
+
+
+			</div>
+			<br>
+			<!-- End Creating a blog post -->
+
+
+			<!-- Viewing a specific blog post -->
+			<h6 id="viewing-a-specific-blog-post">Viewing a Specific Story</h6>
+			<div class="p-4">
+				<p>Request: GET</p>
+				<p>Headers:</p>
+				<div class="code-card">
+					<code>
+						Authorization: Token &lt;token&gt;
+					</code>
+				</div>
+				<br>
+				<p>Url:</p>
+				<div class="code-card">
+					<code>
+						website/api/story/&lt;slug&gt;/
+					</code>
+				</div>
+				<br>
+				<p>Success Response:</p>
+				<div class="code-card">
+					<code>
+						{<br>
+						&nbsp;&nbsp;&nbsp;&nbsp;"pk": "1",<br>
+						&nbsp;&nbsp;&nbsp;&nbsp;"slug": "abcdef",<br>
+						&nbsp;&nbsp;&nbsp;&nbsp;"caption": "Test Caption",<br>
+						&nbsp;&nbsp;&nbsp;&nbsp;"tags": "#Tags",<br>
+						&nbsp;&nbsp;&nbsp;&nbsp;"image": "/media/story/1/story_image.png",<br>
+						&nbsp;&nbsp;&nbsp;&nbsp;"date_published": "2019-07-09T16:02:19.170321Z",<br>
+						&nbsp;&nbsp;&nbsp;&nbsp;"likes": "4",<br>
+						&nbsp;&nbsp;&nbsp;&nbsp;"username": "username",<br>
+						&nbsp;&nbsp;&nbsp;&nbsp;"liked": "boolean,"<br>
+						&nbsp;&nbsp;&nbsp;&nbsp;"profile_image": "/media/account/1/pfp.png",<br>
+						&nbsp;&nbsp;&nbsp;&nbsp;"comments": "4"<br>
+						}
+					</code>
+				</div>
+			</div>
+			<br>
+			<!-- End Viewing a specific blog post  -->
+
+
+
+			<!-- Updating a specific blog post -->
+			<h6 id="updating-a-specific-blog-post">Updating a Specific Story</h6>
+			<div class="p-4">
+				<p>Request: PUT</p>
+				<p>Headers:</p>
+				<div class="code-card">
+					<code>
+						Authorization: Token &lt;token&gt;
+					</code>
+				</div>
+				<br>
+				<p>Url:</p>
+				<div class="code-card">
+					<code>
+						website/api/story/&lt;slug&gt;/update
+					</code>
+				</div>
+				<br>
+				<p>Success Response:</p>
+				<div class="code-card">
+					<code>
+						{<br>
+						&nbsp;&nbsp;&nbsp;&nbsp;"response": "updated"<br>
+						}<br>
+					</code>
+				</div>
+			</div>
+			<br>
+			<!-- End Updating a specific blog post  -->
+
+
+			<!-- Deleting a specific blog post -->
+			<h6 id="deleting-a-specific-blog-post">Deleting a Specific Story</h6>
+			<div class="p-4">
+				<p>Request: DELETE</p>
+				<p>Headers:</p>
+				<div class="code-card">
+					<code>
+						Authorization: Token &lt;token&gt;
+					</code>
+				</div>
+				<br>
+				<p>Url:</p>
+				<div class="code-card">
+					<code>
+						website/api/blog/&lt;slug&gt;/delete
+					</code>
+				</div>
+				<br>
+				<p>Success Response:</p>
+				<div class="code-card">
+					<code>
+						{<br>
+						&nbsp;&nbsp;&nbsp;&nbsp;"response": "deleted"<br>
+						}<br>
+					</code>
+				</div>
+			</div>
+			<br>
+			<!-- End Deleting a specific blog post  -->
+
+			<!-- List Blog Posts (Pagination, Search and Ordering) -->
+			<h6 id="list-blog-posts">List Story Posts (Pagination, Search and Ordering)</h6>
+			<div class="p-4">
+				<p>Request: GET</p>
+				<p>Headers:</p>
+				<div class="code-card">
+					<code>
+						Authorization: Token &lt;token&gt;
+					</code>
+				</div>
+				<br>
+				<p>Url:</p>
+				<div class="code-card">
+					<code>
+						website/api/story/list/?search=&lt;<strong>query</strong>&gt;&ordering=-date_updated&page=1
+					</code>
+				</div>
+				<br>
+				<p>Params:</p>
+				<div class="code-card">
+					<p>query (this will search the title and body of blog posts for a match)</p>
+					<p>ordering (Can use: caption, tags, username or date_published)</p>
+					<p>page (10 results will be shown per page.)</p>
+				</div>
+				<br>
+				<p>Success Response:</p>
+				<div class="code-card">
+					<code>
+						{<br>
+						&nbsp;&nbsp;&nbsp;&nbsp;"count": &lt;num_results&gt;,<br>
+						&nbsp;&nbsp;&nbsp;&nbsp;"next": null,<br>
+						&nbsp;&nbsp;&nbsp;&nbsp;"previous": null,<br>
+						&nbsp;&nbsp;&nbsp;&nbsp;"results": [<br>
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"pk": "2",<br>
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"slug": "abcdef",<br>
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"caption": "gfhhfghfgh",<br>
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"tags": "fghgfhfghf",<br>
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"image": "/media/story/1/story_image.png",<br>
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"date_published": "2019-07-05T21:43:56.452234Z",<br>
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"username": "username",<br>
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"likes": "2",<br>
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"liked": "boolean",<br>
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"image": "/media/account/1/pfp.png",<br>
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"comments": "0"<br>
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;},<br>
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;...<br>
+						}
+					</code>
+				</div>
+				<br>
+				<p>Alternatives:</p>
+				<h6>Liked Posts</h6>
+				<p>Url:</p>
+				<div class="code-card">
+					<code>
+						website/api/story/liked/?search=&lt;<strong>query</strong>&gt;&ordering=-date_updated&page=1
+					</code>
+				</div>
+				<br>
+				<p>Returns a list of stories the user liked</p>
+				<br>
+				<h6>Followed Posts</h6>
+				<p>Url:</p>
+				<div class="code-card">
+					<code>
+						website/api/story/followed/?search=&lt;<strong>query</strong>&gt;&ordering=-date_updated&page=1
+					</code>
+				</div>
+				<br>
+				<p>Returns a list of stories of accounts the user follows</p>
+			</div>
+			<!-- End List Blog Posts (Pagination, Search and Ordering) -->
+
+			<!-- Creating a blog post -->
+			<h6 id="posting-a-comment">Posting a Comment</h6>
+			<div class="p-4">
+				<p>Request: POST</p>
+				<p>Headers:</p>
+				<div class="code-card">
+					<code>
+						Authorization: Token &lt;token&gt;
+					</code>
+				</div>
+				<br>
+				<p>Url:</p>
+				<div class="code-card">
+					<code>
+						website/api/story/&lt;slug&gt;/comment
+					</code>
+				</div>
+				<br>
+				<p>Params:</p>
+				<div class="code-card">
+					<p>comment (text)</p>
+				</div>
+				<br>
+				<p>Success Response:</p>
+				<div class="code-card">
+					<code>
+						{<br>
+						&nbsp;&nbsp;&nbsp;&nbsp;"response": "created",<br>
+						&nbsp;&nbsp;&nbsp;&nbsp;"pk": "2",<br>
+						&nbsp;&nbsp;&nbsp;&nbsp;"comment": "this is the comment,<br>
+						&nbsp;&nbsp;&nbsp;&nbsp;"date_published": "2019-07-09T15:19:33.095626Z",<br>
+						&nbsp;&nbsp;&nbsp;&nbsp;"username": "username",<br>
+						&nbsp;&nbsp;&nbsp;&nbsp;"likes": "0",<br>
+						&nbsp;&nbsp;&nbsp;&nbsp;"image [of user]": ""/media/account/1/pfp.png"<br>
+						}
+					</code>
+				</div>
+			</div>
+			<br>
+			<!-- End Creating a blog post -->
+
+			<h6 id="list-comments">List Comments of Story (Pagination, Search and Ordering)</h6>
+			<div class="p-4">
+				<p>Request: GET</p>
+				<p>Headers:</p>
+				<div class="code-card">
+					<code>
+						Authorization: Token &lt;token&gt;
+					</code>
+				</div>
+				<br>
+				<p>Url:</p>
+				<div class="code-card">
+					<code>
+						website/api/story/comments/?slug=<strong>&lt;slug&gt;</strong>&page=1
+					</code>
+				</div>
+				<br>
+				<p>Params:</p>
+				<div class="code-card">
+					<p>slug (the slug of the post)</p>
+					<p>page (10 results will be shown per page.)</p>
+				</div>
+				<br>
+				<p>Success Response:</p>
+				<div class="code-card">
+					<code>
+						{<br>
+						&nbsp;&nbsp;&nbsp;&nbsp;"count": &lt;num_results&gt;,<br>
+						&nbsp;&nbsp;&nbsp;&nbsp;"next": null,<br>
+						&nbsp;&nbsp;&nbsp;&nbsp;"previous": null,<br>
+						&nbsp;&nbsp;&nbsp;&nbsp;"results": [<br>
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"pk": "2",<br>
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"comment": "gfhhfghfgh",<br>
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"image [of user]": "/media/account/1/pfp.png",<br>
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"date_published": "2019-07-05T21:43:56.452234Z",<br>
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"likes": "0",<br>
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"username": "username"<br>
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;},<br>
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;...<br>
+						}
+					</code>
+				</div>
+				<br>
+
+			<h6 id="liking-a-story">Liking a Story</h6>
+			<div class="p-4">
+				<p>Request: POST</p>
+				<p>Headers:</p>
+				<div class="code-card">
+					<code>
+						Authorization: Token &lt;token&gt;
+					</code>
+				</div>
+				<br>
+				<p>Url:</p>
+				<div class="code-card">
+					<code>
+						website/api/story/&lt;slug&gt;/like
+					</code>
+				</div>
+				<br>
+				<p>Success Response:</p>
+				<div class="code-card">
+					<code>
+						{<br>
+						&nbsp;&nbsp;&nbsp;&nbsp;"response": "(Un)Liked Post"<br>
+						}
+					</code>
+				</div>
+			</div>
+			<br>
+			<!-- End Creating a blog post -->
+
+
+			<h4>Account API</h4>
+			<hr>
+			<br>
+
+			<!-- Obtaining an Authentication token -->
+			<h6 id="obtaining-an-authentication-token">Obtaining an Authentication Token</h6>
+			<div class="p-4">
+
+				<p>Request: POST</p>
+
+				<p>Url:</p>
+				<div class="code-card">
+					<code>
+						website/api/account/login
+					</code>
+				</div>
+				<br>
+				<p>Params:</p>
+				<div class="code-card">
+					<p>username (Enter your login <strong>email</strong>)</p>
+					<p>password (Your password)</p>
+				</div>
+				<p><small>No that's not a typo above. The param is <strong>username</strong> but you use your <strong>email.</strong></small></p>
+				<br>
+				<p>Success Response:</p>
+				<div class="code-card">
+					<code>
+						{<br>
+						&nbsp;&nbsp;&nbsp;&nbsp;"response": "Successfully authenticated.",<br>
+						&nbsp;&nbsp;&nbsp;&nbsp;"pk": 1,<br>
+						&nbsp;&nbsp;&nbsp;&nbsp;"email": "email@example.com",<br>
+						&nbsp;&nbsp;&nbsp;&nbsp;"token": "27a46967801960de8734f65ba13b124aaea96ad9"<br>
+						}<br>
+					</code>
+				</div>
+			</div>
+			<br>
+			<!-- End Obtaining an Authentication token  -->
+
+			<!-- Viewing a specific blog post -->
+			<h6 id="account">Account Properties</h6>
+			<div class="p-4">
+				<p>Request: GET</p>
+				<p>Headers:</p>
+				<div class="code-card">
+					<code>
+						Authorization: Token &lt;token&gt;
+					</code>
+				</div>
+				<br>
+				<p>Url:</p>
+				<div class="code-card">
+					<code>
+						website/api/account/properties/
+					</code>
+				</div>
+				<br>
+				<p>Success Response:</p>
+				<div class="code-card">
+					<code>
+						{<br>
+						&nbsp;&nbsp;&nbsp;&nbsp;"pk": "2",<br>
+						&nbsp;&nbsp;&nbsp;&nbsp;"email": "email@example.com",<br>
+						&nbsp;&nbsp;&nbsp;&nbsp;"username": "username"<br>
+						&nbsp;&nbsp;&nbsp;&nbsp;"display_name": "Display Name",<br>
+						&nbsp;&nbsp;&nbsp;&nbsp;"image": "/media/account/1/pfp.png",<br>
+						&nbsp;&nbsp;&nbsp;&nbsp;"posts": "1",<br>
+						&nbsp;&nbsp;&nbsp;&nbsp;"followers": "2",<br>
+						&nbsp;&nbsp;&nbsp;&nbsp;"following": "4",<br>
+						&nbsp;&nbsp;&nbsp;&nbsp;"description": "This is my biography",<br>
+						&nbsp;&nbsp;&nbsp;&nbsp;"website": "google.com"<br>
+						}
+					</code>
+				</div>
+			</div>
+			<br>
+			<!-- End Viewing a specific blog post  -->
+
+			<!-- Updating a specific blog post -->
+			<h6 id="updating-account">Update Account Properties</h6>
+			<div class="p-4">
+				<p>Request: PUT</p>
+				<p>Headers:</p>
+				<div class="code-card">
+					<code>
+						Authorization: Token &lt;token&gt;
+					</code>
+				</div>
+				<br>
+				<p>Url:</p>
+				<div class="code-card">
+					<code>
+						website/api/account/properties/update
+					</code>
+				</div>
+				<br>
+				<p>Success Response:</p>
+				<div class="code-card">
+					<code>
+						{<br>
+						&nbsp;&nbsp;&nbsp;&nbsp;"response": "updated",<br>
+						&nbsp;&nbsp;&nbsp;&nbsp;"email": "email@example.com",<br>
+						&nbsp;&nbsp;&nbsp;&nbsp;"username": "username"<br>
+						&nbsp;&nbsp;&nbsp;&nbsp;"display_name": "Display Name",<br>
+						&nbsp;&nbsp;&nbsp;&nbsp;"image": "/media/account/1/pfp.png",<br>
+						&nbsp;&nbsp;&nbsp;&nbsp;"posts": "1",<br>
+						&nbsp;&nbsp;&nbsp;&nbsp;"followers": "2",<br>
+						&nbsp;&nbsp;&nbsp;&nbsp;"following": "4",<br>
+						&nbsp;&nbsp;&nbsp;&nbsp;"description": "This is my biography",<br>
+						&nbsp;&nbsp;&nbsp;&nbsp;"website": "google.com"<br>
+						}<br>
+					</code>
+				</div>
+			</div>
+			<br>
+			<!-- End Updating a specific blog post  -->
+
+			<!-- Viewing a specific blog post -->
+			<h6 id="profile">Get Profile</h6>
+			<div class="p-4">
+				<p>Request: GET</p>
+				<p>Headers:</p>
+				<div class="code-card">
+					<code>
+						Authorization: Token &lt;token&gt;
+					</code>
+				</div>
+				<br>
+				<p>Url:</p>
+				<div class="code-card">
+					<code>
+						website/api/account/&lt;username&gt;/
+					</code>
+				</div>
+				<br>
+				<p>Success Response:</p>
+				<div class="code-card">
+					<code>
+						{<br>
+						&nbsp;&nbsp;&nbsp;&nbsp;"pk": "1",<br>
+						&nbsp;&nbsp;&nbsp;&nbsp;"username": "username"<br>
+						&nbsp;&nbsp;&nbsp;&nbsp;"display_name": "Display Name",<br>
+						&nbsp;&nbsp;&nbsp;&nbsp;"image": "/media/account/1/pfp.png",<br>
+						&nbsp;&nbsp;&nbsp;&nbsp;"posts": "1",<br>
+						&nbsp;&nbsp;&nbsp;&nbsp;"followers": "2",<br>
+						&nbsp;&nbsp;&nbsp;&nbsp;"following": "4",<br>
+						&nbsp;&nbsp;&nbsp;&nbsp;"description": "This is my biography",<br>
+						&nbsp;&nbsp;&nbsp;&nbsp;"website": "google.com",<br>
+						&nbsp;&nbsp;&nbsp;&nbsp;"follow": "Boolean"<br>
+						}
+					</code>
+				</div>
+			</div>
+			<br>
+			<!-- End Viewing a specific blog post  -->
+
+			<h6 id="list-profiles">List Profiles (Pagination, Search and Ordering)</h6>
+			<div class="p-4">
+				<p>Request: GET</p>
+				<p>Headers:</p>
+				<div class="code-card">
+					<code>
+						Authorization: Token &lt;token&gt;
+					</code>
+				</div>
+				<br>
+				<p>Url:</p>
+				<div class="code-card">
+					<code>
+						website/api/account/profile_list/?search=&lt;<strong>query</strong>&gt;&page=1
+					</code>
+				</div>
+				<br>
+				<p>Params:</p>
+				<div class="code-card">
+					<p>query (this will search the username and display name of profiles for a match)</p>
+					<p>page (10 results will be shown per page.)</p>
+				</div>
+				<br>
+				<p>Success Response:</p>
+				<div class="code-card">
+					<code>
+						{<br>
+						&nbsp;&nbsp;&nbsp;&nbsp;"count": &lt;num_results&gt;,<br>
+						&nbsp;&nbsp;&nbsp;&nbsp;"next": null,<br>
+						&nbsp;&nbsp;&nbsp;&nbsp;"previous": null,<br>
+						&nbsp;&nbsp;&nbsp;&nbsp;"results": [<br>
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"pk": "1",<br>
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"username": "gfhhfghfgh",<br>
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"display_name": "fghgfhfghf",<br>
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"image": "/media/story/1/story_image.png",<br>
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"posts": "4",<br>
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"following": "3",<br>
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"followers": "2",<br>
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"description": "description",<br>
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"website": "website",<br>
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"follow": "boolean"<br>
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;},<br>
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;...<br>
+						}
+					</code>
+				</div>
+				<br>
+
+			<br><br>
+			<!-- end Documentation -->
+			</div>
+
+			<!-- Updating a specific blog post -->
+			<h6 id="follow-profile">Follow Profile</h6>
+			<div class="p-4">
+				<p>Request: POST</p>
+				<p>Headers:</p>
+				<div class="code-card">
+					<code>
+						Authorization: Token &lt;token&gt;
+					</code>
+				</div>
+				<br>
+				<p>Url:</p>
+				<div class="code-card">
+					<code>
+						website/api/account/&lt;username&gt;/follow
+					</code>
+				</div>
+				<br>
+				<p>Success Response:</p>
+				<div class="code-card">
+					<code>
+						{<br>
+						&nbsp;&nbsp;&nbsp;&nbsp;"response": "(un)followed<br>
+						}<br>
+					</code>
+				</div>
+			</div>
+			<br>
+
+			<br><br>
+			<!-- end Documentation -->
+			</div>
+		</div>
+	</div>
+
+	<div class="col-lg-2">
+		<div class="card">
+			<h5>Navigation:</h5>
+			<br>
+			<ul class="list-group">
+				<li class="list-group-item p-1">Story</li>
+				<a href="#creating-a-blog-post"><li class="list-group-item p-1"><small>Creating a Story</small></li></a>
+				<a href="#viewing-a-specific-blog-post"><li class="list-group-item p-1"><small>Viewing a Specific Story</small></li></a>
+				<a href="#updating-a-specific-blog-post"><li class="list-group-item p-1"><small>Updating a Specific Story</small></li></a>
+				<a href="#deleting-a-specific-blog-post"><li class="list-group-item p-1"><small>Deleting a Specific Story</small></li></a>
+				<a href="#list-blog-posts"><li class="list-group-item p-1"><small>List Stories</small></li></a>
+				<a href="#posting-a-comment"><li class="list-group-item p-1"><small>Post a Comment</small></li></a>
+				<a href="#list-comments"><li class="list-group-item p-1"><small>List Comments of Story</small></li></a>
+				<a href="#liking-a-story"><li class="list-group-item p-1"><small>Liking a Story</small></li></a>
+			</ul>
+			<br>
+			<ul class="list-group">
+				<li class="list-group-item p-1">Account</li>
+				<a href="#obtaining-an-authentication-token"><li class="list-group-item p-1"><small>Obtaining an Authentication Token</small></li></a>
+				<a href="#account"><li class="list-group-item p-1"><small>Account</small></li></a>
+				<a href="#updating-account"><li class="list-group-item p-1"><small>Update Account Properties</small></li></a>
+				<a href="#profile"><li class="list-group-item p-1"><small>Get Profile</small></li></a>
+				<a href="#list-profiles"><li class="list-group-item p-1"><small>List Profiles</small></li></a>
+				<a href="#follow-profile"><li class="list-group-item p-1"><small>Follow Profile</small></li></a>
+			</ul>
+		</div>
+	</div>
+
+</div>
+
+</div>
+
+{% endblock content %}

@@ -1,0 +1,227 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block content %}
+
+
+<style type="text/css">
+  .form-signin {
+    width: 100%;
+    max-width: 330px;
+    padding: 15px;
+    margin: auto;
+  }
+
+  .form-signin .form-control {
+    position: relative;
+    box-sizing: border-box;
+    height: auto;
+    padding: 10px;
+    font-size: 16px;
+  }
+
+  .form-signin .form-control:focus {
+    z-index: 2;
+  }
+
+  .form-signin input[type="email"] {
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+  }
+
+  .form-signin input[type="text"] {
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+  }
+
+  .h3 {
+    text-align: center;
+  }
+
+  img {
+    border-radius: 50%;
+      display: block;
+      margin-left: auto;
+      margin-right: auto
+  }
+
+  #update-response {
+    text-align: center;
+    color: green;
+
+     animation:signup-response 0.5s 1;
+    -webkit-animation:signup-response 0.5s 1;
+    animation-fill-mode: forwards;
+
+    animation-delay:2s;
+    -webkit-animation-delay:1s; /* Safari and Chrome */
+    -webkit-animation-fill-mode: forwards;
+  }
+
+  .image-group{
+      position: relative;
+      text-align: center;
+      cursor:pointer;
+  }
+
+  .image-group:hover .image {
+    opacity: 0.3;
+  }
+
+  .image-group:hover .middle {
+    opacity: 1;
+  }
+
+  .text {
+    margin: auto;
+    background-color: #4CAF50;
+    color: white;
+    font-size: 15px;
+    padding: 15px;
+  }
+
+	.image {
+	  opacity: 1;
+	  transition: .5s ease;
+	  backface-visibility: hidden;
+	}
+
+  @keyframes signup-response{
+      from {opacity :1;}
+      to {opacity :0;}
+  }
+
+  @-webkit-keyframes signup-response{
+      from {opacity :1;}
+      to {opacity :0;}
+  }
+
+</style>
+
+<form method="post" class="form-signin" enctype="multipart/form-data">{% csrf_token %}
+
+  {% if success_message %}
+    <p id="update-response">{{ success_message }}</p>
+  {% endif %}
+
+  <h1 class="h3 mb-3 font-weight-normal">Account</h1>
+
+  <div class="form-group image-group" id="id_image_group">
+      {% if account_form.initial.image %}
+        <img class="img-fluid image" style="width:120px; border-radius: 50px" alt="Avatar" src="{{account_form.initial.image.url}}" id="id_image_display">
+      {% else %}
+        <img class="img-fluid image" style="width:120px; border-radius: 50px" alt="Avatar" src="{% static 'default.png' %}" id="id_image_display">
+      {% endif %}
+  </div>
+  <input type="file" name="image" id="id_image_file" accept="image/*" style="visibility: hidden" onchange="readURL(this)">
+
+    <div class="form-group row">
+    <div class="col-12">
+      <div class="input-group">
+        <div class="input-group-prepend">
+          <div class="input-group-text">
+            <i class="fa fa-address-card"></i>
+          </div>
+        </div>
+      <input type="text" id="inputDisplayName" name="display_name" class="form-control" placeholder="Display Name" value="{{account_form.initial.display_name}}">
+      </div>
+    </div>
+  </div>
+
+    <div class="form-group row">
+    <div class="col-12">
+      <div class="input-group">
+        <div class="input-group-prepend">
+          <div class="input-group-text">
+            <i class="fa fa-cloud"></i>
+          </div>
+        </div>
+      <input type="text" id="inputWebsite" name="website" class="form-control" placeholder="Website" value="{{account_form.initial.website}}">
+      </div>
+    </div>
+  </div>
+
+    <div class="form-group row">
+    <div class="col-12">
+      <div class="input-group">
+        <div class="input-group-prepend">
+          <div class="input-group-text">
+            <i class="fa fa-info-circle"></i>
+          </div>
+        </div>
+      <input type="text" id="inputDescription" name="description" class="form-control" placeholder="Biography" value="{{account_form.initial.description}}">
+      </div>
+    </div>
+  </div>
+
+  <br>
+
+  <h1 class="h3 mb-3 font-weight-normal">Personal Information</h1>
+
+  <div class="form-group row">
+    <div class="col-12">
+      <div class="input-group">
+        <div class="input-group-prepend">
+          <div class="input-group-text">
+            <i class="fa fa-envelope"></i>
+          </div>
+        </div>
+      <input type="email" id="inputEmail" name="email" class="form-control" placeholder="Email address" required autofocus value="{{account_form.initial.email}}">
+      </div>
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <div class="col-12">
+      <div class="input-group">
+        <div class="input-group-prepend">
+          <div class="input-group-text">
+            <i class="fa fa-user"></i>
+          </div>
+        </div>
+      <input type="text" id="inputUsername" name="username" class="form-control" placeholder="Username" required value="{{account_form.initial.username}}">
+      </div>
+    </div>
+  </div>
+
+  <p>
+    {% for field in account_form %}
+      {% for error in field.errors %}
+            <p style="color: red">{{ error }}</p>
+      {% endfor %}
+    {% endfor %}
+    {% if account_form.non_field_errors %}
+      <div style="color: red">
+        <p>{{account_form.non_field_errors}}</p>
+      </div>
+    {% endif %}
+  </p>
+
+  <br>
+
+  <div class="d-flex flex-column">
+    <a class="m-auto" href="{% url 'password_change' %}">Change Password</a>
+  </div>
+
+  <br>
+
+  <button class="btn btn-lg btn-primary btn-block" type="submit">Save Changes</button>
+</form>
+
+<script type="text/javascript">
+	document.getElementById('id_image_group').onclick = function(event) {
+    	document.getElementById('id_image_file').click();
+    };
+	function readURL(input){
+		var reader = new FileReader();
+		reader.onload = function (e) {
+            $('#id_image_display')
+                .attr('src', e.target.result)
+        };
+		reader.readAsDataURL(input.files[0]);
+	}
+</script>
+
+
+{% endblock content %}

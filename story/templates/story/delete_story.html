@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+<style type="text/css">
+	.card {
+		max-width: 700px;
+	}
+	.card-body{
+		padding: 20px;
+	}
+
+    .box {
+       display: flex;
+       align-items:center;
+        vertical-align: middle;
+    }
+
+	a:hover {
+  		text-decoration: none;
+	}
+
+</style>
+
+<div class="container">
+	<div class="row">
+
+        <form method="post">{% csrf_token %}
+		<!-- Blog Post -->
+		<div class="card m-auto">
+            <div class="card-footer box">
+                <img class="img-fluid d-block" style="border-radius: 50px; margin-right: 15px" src="{{story_post.author.image.url}}" width="40" height="40">
+                <h4 class="card-title">{{story_post.author.username}}</h4>
+            </div>
+			<img class="card-img-top" src="{{story_post.image.url}}">
+			<div class="card-body">
+                <p class="card-text">{{story_post.likes}} likes</p>
+                <p class="card-text"><b>{{story_post.author.username}}</b> {{story_post.caption}}</p>
+			</div>
+            <div class="card-body">
+                <p><b>Are you sure you want to delete this post?</b></p>
+                <button class="btn btn-primary" type="submit" style="background-color: red;">Delete</button>
+                <a href="{% url 'story:detail' story_post.slug %}" class="btn btn-primary" style="margin-left: 10px">Cancel</a>
+            </div>
+
+			<div class="card-footer text-muted">
+			  Posted on {{story_post.date_published}} by {{story_post.author.username}}
+			</div>
+		</div>
+        </form>
+
+	</div>
+</div>
+
+
+{% endblock content %}

@@ -1,0 +1,80 @@
+<style type="text/css">
+	@media (min-width: 768px) {
+	  html {
+	    font-size: 16px;
+	  }
+	}
+
+	.search-bar{
+		max-width: 300px;
+		width: 100%;
+	}
+
+	.card-deck .card {
+	  min-width: 220px;
+	}
+
+	a:hover {
+  		text-decoration: none;
+	}
+
+	.dropdown-item:hover {
+ 		background-color: #f2f2f2;
+	}
+
+	form {
+		width: 100%;
+	}
+
+</style>
+
+<!-- Header -->
+<div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom shadow-sm">
+  <h4 class="my-0 mr-md-auto font-weight-normal">
+  	<a class="p-2 text-dark" href="{% url 'home' %}">Harmony</a>
+  </h4>
+	{% if request.user.is_authenticated %}
+		<h5 class="my-0 mr-md-auto font-weight-normal">
+			<a class="p-2 text-dark" href="{% url 'followed' %}">Followed Posts</a>
+			<a class="p-2 text-dark" href="{% url 'liked' %}">Liked Posts</a>
+		</h5>
+	{% endif %}
+	<div class="search-bar mt-sm-2 mr-2">
+	  <form onsubmit="return executeQuery();">
+		<input type="text" class="form-control" name="q" id="id_q" placeholder="Search...">
+	  </form>
+	</div>
+  <nav class="my-2 my-md-0 mr-md-3">
+  	{% if request.user.is_authenticated %}
+		<div class="navbar-nav dropdown d-xl-flex d-lg-flex d-md-flex d-sm-none d-none">
+			<a class="nav-link text-dark" style="cursor: pointer" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true"
+			aria-expanded="false">
+				Account
+			</a>
+			<div class="dropdown-menu dropdown-primary mr-lg-5 mr-md-5" aria-labelledby="navbarDropdownMenuLink">
+				<a class="dropdown-item" href="/user/{{request.user.username}}">My Profile</a>
+				<a class="dropdown-item" href="/account/">Edit Profile</a>
+				<a class="dropdown-item" href="/logout/">Logout</a>
+			</div>
+		</div>
+	{% else %}
+	    <a class="p-2 text-dark" href="{% url 'login' %}">Login</a>
+	    <a class="btn btn-outline-primary" href="{% url 'register' %}">Register</a>
+	{% endif %}
+
+  </nav>
+</div>
+
+
+<!-- End Header -->
+<script type="text/javascript">
+	document.getElementById("id_q").value = "{{query}}"
+</script>
+<script>
+function executeQuery() {
+    var query = document.getElementById('id_q').value;
+    window.location.replace("http://127.0.0.1:8000/?q=" + query)
+    // "https://open-api.xyz/?q=" + query;
+    return false
+}
+</script>

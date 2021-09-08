@@ -1,0 +1,145 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<style type="text/css">
+
+    .profile {
+        min-height: 100px;
+        display: inline-block;
+    }
+
+    .emphasis h2 {
+        margin-bottom:0;
+    }
+
+    li {
+        display: inline;
+        margin-right: 20px;
+    }
+
+    ul {
+        padding: 0;
+        margin: 10px 10px 10px 0;
+    }
+
+    p {
+        margin-bottom: 5px;
+    }
+
+    :root {
+        --jumbotron-padding-y: 3rem;
+    }
+
+    @media (min-width: 768px) {
+      .jumbotron {
+        padding-top: calc(var(--jumbotron-padding-y) * 2);
+        padding-bottom: calc(var(--jumbotron-padding-y) * 2);
+      }
+    }
+
+    .jumbotron p:last-child {
+      margin-bottom: 0;
+    }
+
+    footer {
+      padding-top: 3rem;
+      padding-bottom: 3rem;
+    }
+
+    footer p {
+      margin-bottom: .25rem;
+    }
+
+    .box-shadow { box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05); }
+
+    .crop {
+      margin: 1em 0;
+      text-align: center;
+    }
+
+    .crop img {
+      width: 30vw;
+      height: 30vw;
+    }
+
+    .crop-cover img {
+      object-fit: cover;
+    }
+
+</style>
+
+<div class="container" style="padding-top: 30px;">
+	<div class="row">
+        <div class=" col-sm-5 text-right" style="margin-right: 20px">
+            <figure>
+                <img src="{{profile.image.url}}" alt="" class="img-circle img-responsive" style="width: 150px; border-radius: 50%">
+            </figure>
+        </div>
+		<div class="col-md-offset-2 col-md-8 col-lg-offset-3 col-lg-6" style="padding-top: 10px">
+    	 <div class="well profile">
+            <div class="col-sm-12">
+                <div class="col-xs-12 col-sm-12">
+                    {% if profile == request.user %}
+                        <h2>{{profile.username}}
+                            <a href="{% url 'account' %}">
+                                <button class="btn btn-lg btn-primary" style="width: auto; height: auto; font-size: 12px; margin-left: 10px" type="submit">Edit
+                                </button>
+                            </a>
+                        </h2>
+                    {% elif not follows %}
+                        <form method="post">{% csrf_token %}
+                            <h2>{{profile.username}}
+                                <button class="btn btn-lg btn-primary" style="width: auto; height: auto; font-size: 12px; margin-left: 10px" type="submit">Follow</button>
+                            </h2>
+                        </form>
+
+                    {% else %}
+                        <form method="post">{% csrf_token %}
+                            <h2>{{profile.username}}
+                                <button class="btn btn-lg btn-primary" style="width: auto; height: auto; font-size: 12px; margin-left: 10px; background-color: red" type="submit">Unfollow</button>
+                            </h2>
+                        </form>
+                    {% endif %}
+                    <span>
+                        <ul>
+                            <li><strong>{{profile.posts}}</strong> Posts</li>
+                            <li><strong>{{profile.followers}}</strong> Followers</li>
+                            <li><strong>{{profile.following}}</strong> Following</li>
+                        </ul>
+                    </span>
+                    <p><strong>{{profile.display_name}}</strong></p>
+                    <p>{{profile.description}}</p>
+                    <p>{{profile.website}}</p>
+                </div>
+            </div>
+    	 </div>
+		</div>
+	</div>
+</div>
+
+<div class="album py-5">
+  <h3 class="mb-3 font-weight-normal container mt-4 p-4">Stories:</h3>
+    <div class="container">
+        <div class="row">
+            {% if stories %}
+                {% for post in stories %}
+                    <div class="col-md-4">
+                        <div class="card mb-4 box-shadow">
+                            <a href="{% url 'story:detail' post.slug %}">
+                                <img class="card-img-top crop" src="{{post.image.url}}" alt="Card image cap">
+                            </a>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+				<div class="blog-post-container">
+					{% include 'story/snippets/story_post_snippet.html' with query=query %}
+				</div>
+			{% endif %}
+        </div>
+        {% include 'story/snippets/story_post_pagination.html' with story_posts=stories %}
+    </div>
+</div>
+
+{% endblock content %}
